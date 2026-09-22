@@ -13,7 +13,7 @@ optdepends=('wl-clipboard: rename the files you copied in the file manager'
 makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools')
 checkdepends=('python-pytest')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('9d35c252c7b8b265f8fb138c50b00d62e5e975f18df962803bcf60e0eb7fcb15')
 
 build() {
   cd "$pkgname-$pkgver"

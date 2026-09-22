@@ -1,0 +1,35 @@
+# Maintainer: Andre Bruno
+pkgname=omarchy-bulk-rename
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Bulk Rename for Omarchy — rename a pile of files at once, with a preview first and an undo after (PowerToys PowerRename, ported)"
+arch=('any')
+url="https://github.com/andrebbruno/omarchy-bulk-rename"
+license=('MIT')
+depends=('python')
+optdepends=('wl-clipboard: rename the files you copied in the file manager'
+            'nautilus: right-click → Scripts → Bulk rename'
+            'gum: menu fallback outside Omarchy')
+makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools')
+checkdepends=('python-pytest')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$pkgname-$pkgver"
+  python -m build --wheel --no-isolation
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  PYTHONPATH="$PWD" python -m pytest tests -q
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  python -m installer --destdir="$pkgdir" dist/*.whl
+  install -Dm755 "nautilus/Bulk rename" \
+    "$pkgdir/usr/share/$pkgname/nautilus/Bulk rename"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}

@@ -1,0 +1,13 @@
+#!/bin/bash
+# Nautilus script: right-click a selection → Scripts → Bulk rename.
+# Nautilus hands the selection over in an environment variable, one path per line,
+# which is why this reads it into an array rather than letting the shell split it:
+# a filename with a space in it is exactly the kind of name people bulk rename.
+set -u
+
+files=()
+while IFS= read -r line; do
+  [[ -n $line ]] && files+=("$line")
+done <<<"${NAUTILUS_SCRIPT_SELECTED_FILE_PATHS:-}"
+
+exec omarchy-bulk-rename "${files[@]}"
